@@ -1,0 +1,24 @@
+{
+  "signIn": "Sign in",
+  "signUp": "Sign up",
+  "signOut": "Sign out",
+  "forgotPassword": "Forgot password?",
+  "newHere": "New here? Sign up",
+  "alreadyRegistered": "Already registered",
+  "accept": "I Accept",
+  "termsOfService": "Terms of Service",
+  "resend": "Resend",
+  "code": "Code",
+  "change": "change?",
+  "errorAcceptTermsOfService": "Sorry, you can't continue without accept",
+  "verifyYourPhone": "Verify your phone",
+  "verifyYourEmail": "Verify your email",
+  "enterOTP": "Enter the OTP sent to {username}",
+  "@enterOTP": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  }
+}

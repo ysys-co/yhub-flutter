@@ -1,0 +1,17 @@
+{
+  "signIn": "تسجيل الدخول",
+  "signUp": "إنشاء حساب",
+  "signOut": "تسجيل الخروج",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "newHere": "جديد؟ إنشاء حساب",
+  "alreadyRegistered": "لدي حساب مسبقاً",
+  "accept": "أوافق على",
+  "termsOfService": "شروط الخدمة",
+  "resend": "إعادة ارسال",
+  "code": "رمز التحقق",
+  "change": "تغيير؟",
+  "errorAcceptTermsOfService": "عذراً، لا يمكنك المتابعه دون الموافقه",
+  "verifyYourPhone": "التحقق من رقم الهاتف",
+  "verifyYourEmail": "التحقق من البريد الالكتروني",
+  "enterOTP": "ادخل الرمز المرسل الى {username}"
+}
