@@ -1,3 +1,8 @@
+# 0.0.4
+
+- Fix terms of service assertion when no method passed.
+- Fix onChanged property callback.
+
 # 0.0.3
 
 - Add onChanged property.

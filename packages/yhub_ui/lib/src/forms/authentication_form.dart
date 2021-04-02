@@ -193,7 +193,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
     if (widget.formKey.currentState!.validate()) {
       widget.formKey.currentState!.save();
 
-      if (!_isSignIn) assert(_isAgree);
+      if (widget.onAskTerms != null && !_isSignIn) assert(_isAgree);
 
       FocusScope.of(context).unfocus();
 
