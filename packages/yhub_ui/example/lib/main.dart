@@ -83,7 +83,7 @@ class AuthenticationPage extends StatelessWidget {
               ),
             ],
             onAskTerms: () {},
-            onSubmit: (isSignIn) {
+            onSubmit: (isSignIn) async {
               // TODO
             },
           ),

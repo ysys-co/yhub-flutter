@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yhub_ui/l10n/yhub_ui_localizations.dart';
@@ -13,7 +15,7 @@ class AuthenticationForm extends StatefulWidget {
 
   final Function()? onForgot;
   final Function()? onAskTerms;
-  final Function(bool isSignIn)? onSubmit;
+  final Future Function(bool isSignIn)? onSubmit;
 
   const AuthenticationForm({
     Key? key,
@@ -118,7 +120,6 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                     setState(() {
                       widget.formKey.currentState!.reset();
                       _isSignIn = !_isSignIn;
-                      _submit();
                     });
                   },
           ),
@@ -190,24 +191,19 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
     if (widget.formKey.currentState!.validate()) {
       widget.formKey.currentState!.save();
 
-      if (!_isSignIn && !_isAgree) {
-        return null;
-      }
+      if (!_isSignIn) assert(_isAgree);
 
       FocusScope.of(context).unfocus();
 
       setState(() {
         _isLoading = true;
       });
-      try {
-        widget.onSubmit!(_isSignIn);
-      } catch (_) {
-        // Show error
-      } finally {
+
+      widget.onSubmit!(_isSignIn).whenComplete(() {
         setState(() {
           _isLoading = false;
         });
-      }
+      });
     }
   }
 }
