@@ -15,7 +15,7 @@ class AuthenticationForm extends StatefulWidget {
 
   final Function()? onForgot;
   final Function()? onAskTerms;
-  final Future Function(bool isSignIn)? onChanged;
+  final Function Function(bool isSignIn)? onChanged;
   final Future Function(bool isSignIn) onSubmit;
 
   const AuthenticationForm({
