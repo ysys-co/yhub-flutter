@@ -99,6 +99,7 @@ class _ResendCounter extends StatefulWidget {
 
 class _ResendCounterState extends State<_ResendCounter> {
   int _timeout = 60;
+  int _attempts = 0;
   Timer? _timer;
 
   @override
@@ -114,6 +115,7 @@ class _ResendCounterState extends State<_ResendCounter> {
   }
 
   _countdown() {
+    _timeout = 60 * ++_attempts;
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         --_timeout;
