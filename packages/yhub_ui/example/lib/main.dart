@@ -109,6 +109,7 @@ class VerificationPage extends StatelessWidget {
               print('a:$a');
             },
             onCancel: () {},
+            onResend: () async {},
           ),
         ),
       ),

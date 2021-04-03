@@ -1,5 +1,6 @@
 # 0.0.5
 
+- Add timeout in verification_form.
 - Fix onChanged propery return type by using void.
 - Now onSubmit supports FurureOr callback.
 

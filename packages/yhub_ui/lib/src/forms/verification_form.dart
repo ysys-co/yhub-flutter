@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
@@ -15,7 +17,7 @@ class VerificationForm extends StatefulWidget {
   final VerificationMethod? method;
 
   final Function() onCancel;
-  final Function()? onResend;
+  final Future Function()? onResend;
   final Function(int code) onSumbit;
 
   const VerificationForm({
@@ -35,8 +37,6 @@ class VerificationForm extends StatefulWidget {
 }
 
 class _VerificationFormState extends State<VerificationForm> {
-  int? _timeout;
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -78,29 +78,81 @@ class _VerificationFormState extends State<VerificationForm> {
             textFieldAlignment: MainAxisAlignment.spaceAround,
             fieldStyle: FieldStyle.underline,
             onCompleted: (value) => widget.onSumbit(int.parse(value)),
-            onChanged: (_) {},
           ),
           const SizedBox(height: 8.0),
-          TextButton(
-            onPressed: () {},
-            child: Text(
-              YHubUILocalizations.of(context)!.resend,
-            ),
-          ),
           if (widget.onResend != null)
-            StatefulBuilder(
-              builder: (context, setState) {
-                return ListTile(
-                  leading: Icon(Icons.textsms_outlined),
-                  title: Text(YHubUILocalizations.of(context)!.resend),
-                  trailing: _timeout != null ? Text(_timeout.toString()) : null,
-                  onTap: widget.onResend!,
-                  enabled: _timeout == 0,
-                );
-              },
-            ),
+            _ResendCounter(onResend: widget.onResend!)
         ],
       ),
+    );
+  }
+}
+
+class _ResendCounter extends StatefulWidget {
+  final Future Function() onResend;
+
+  const _ResendCounter({Key? key, required this.onResend}) : super(key: key);
+
+  @override
+  _ResendCounterState createState() => _ResendCounterState();
+}
+
+class _ResendCounterState extends State<_ResendCounter> {
+  int _timeout = 60;
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _countdown();
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
+  _countdown() {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        --_timeout;
+      });
+
+      if (_timeout == 0) timer.cancel();
+    });
+  }
+
+  String get remaining {
+    int seconds = _timeout;
+    int hours = (seconds / 3600).truncate();
+    seconds = (seconds % 3600).truncate();
+    int minutes = (seconds / 60).truncate();
+
+    String hoursStr = (hours).toString().padLeft(2, '0');
+    String minutesStr = (minutes).toString().padLeft(2, '0');
+    String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+
+    if (hours == 0) {
+      return '$minutesStr:$secondsStr';
+    }
+
+    return '$hoursStr:$minutesStr:$secondsStr';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        YHubUILocalizations.of(context)!.resend,
+      ),
+      trailing: _timeout != 0 ? Text(remaining) : null,
+      onTap: () {
+        widget.onResend().whenComplete(() {
+          _countdown();
+        });
+      },
+      enabled: _timeout == 0,
     );
   }
 }
