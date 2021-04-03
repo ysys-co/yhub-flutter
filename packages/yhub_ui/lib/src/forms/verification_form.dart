@@ -115,7 +115,7 @@ class _ResendCounterState extends State<_ResendCounter> {
   }
 
   _countdown() {
-    _timeout = 60 * ++_attempts;
+    _timeout = 60 * (++_attempts);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         --_timeout;
