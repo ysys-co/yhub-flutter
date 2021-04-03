@@ -84,7 +84,8 @@ class AuthenticationPage extends StatelessWidget {
             ],
             onAskTerms: () {},
             onSubmit: (isSignIn) async {
-              // TODO
+              await Future.delayed(Duration(seconds: 3));
+              print('Success');
             },
           ),
         ),

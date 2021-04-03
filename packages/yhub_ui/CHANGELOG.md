@@ -1,3 +1,7 @@
+# 0.0.6
+
+- Fix onSubmit not showing progress bar.
+
 # 0.0.5
 
 - Add timeout in verification_form.
