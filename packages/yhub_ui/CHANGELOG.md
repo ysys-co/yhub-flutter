@@ -1,3 +1,8 @@
+# 0.0.5
+
+- Fix onChanged propery return type by using void.
+- Now onSubmit supports FurureOr callback.
+
 # 0.0.4
 
 - Fix terms of service assertion when no method passed.

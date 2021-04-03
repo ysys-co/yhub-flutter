@@ -15,8 +15,8 @@ class AuthenticationForm extends StatefulWidget {
 
   final Function()? onForgot;
   final Function()? onAskTerms;
-  final Function Function(bool isSignIn)? onChanged;
-  final Future Function(bool isSignIn) onSubmit;
+  final void Function(bool isSignIn)? onChanged;
+  final FutureOr Function(bool isSignIn) onSubmit;
 
   const AuthenticationForm({
     Key? key,
@@ -121,7 +121,9 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
                 : () async {
                     setState(() {
                       widget.formKey.currentState!.reset();
-                      widget.onChanged!(_isSignIn = !_isSignIn);
+                      _isSignIn = !_isSignIn;
+                      if (widget.onChanged != null)
+                        widget.onChanged!(_isSignIn);
                     });
                   },
           ),
@@ -197,15 +199,19 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
 
       FocusScope.of(context).unfocus();
 
-      setState(() {
-        _isLoading = true;
-      });
-
-      widget.onSubmit(_isSignIn).whenComplete(() {
+      if (widget.onSubmit is Future) {
         setState(() {
-          _isLoading = false;
+          _isLoading = true;
         });
-      });
+
+        (widget.onSubmit(_isSignIn) as Future).whenComplete(() {
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      } else {
+        widget.onSubmit(_isSignIn);
+      }
     }
   }
 }
