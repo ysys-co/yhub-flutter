@@ -1,3 +1,8 @@
+# 0.0.8
+
+- Fix enabled condidtion.
+- Add onValidate property.
+
 # 0.0.7
 
 - Add enabled property to enable or disable authentication buttons.

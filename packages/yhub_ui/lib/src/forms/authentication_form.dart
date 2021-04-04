@@ -1,9 +1,6 @@
-import 'dart:async';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:yhub_ui/l10n/yhub_ui_localizations.dart';
-import 'package:yhub_ui/l10n/yhub_ui_localizations_ar.dart';
 
 class AuthenticationForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
@@ -15,6 +12,7 @@ class AuthenticationForm extends StatefulWidget {
   final Widget logo;
   final Widget? slogan;
 
+  final bool Function()? onValidate;
   final Function()? onForgot;
   final Function()? onAskTerms;
   final Function(bool isSignIn)? onChanged;
@@ -27,6 +25,7 @@ class AuthenticationForm extends StatefulWidget {
     required this.logo,
     this.slogan,
     required this.fields,
+    this.onValidate,
     this.onChanged,
     required this.onSubmit,
     this.onForgot,
@@ -104,7 +103,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
               minimumSize: Size(double.infinity, 48.0),
               shape: const StadiumBorder(),
             ),
-            onPressed: (widget.enabled || _isLoading) ? null : _submit,
+            onPressed: (!widget.enabled || _isLoading) ? null : _submit,
           ),
           const SizedBox(height: 8),
           ElevatedButton(
@@ -119,15 +118,15 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
               onPrimary: Theme.of(context).accentColor,
               shape: const StadiumBorder(),
             ),
-            onPressed: (widget.enabled || _isLoading)
+            onPressed: (!widget.enabled || _isLoading)
                 ? null
                 : () async {
                     setState(() {
                       widget.formKey.currentState!.reset();
                       _isSignIn = !_isSignIn;
-                      if (widget.onChanged != null)
-                        widget.onChanged!(_isSignIn);
                     });
+
+                    if (widget.onChanged != null) widget.onChanged!(_isSignIn);
                   },
           ),
           if (widget.children != null) ...widget.children!(_isSignIn),
@@ -195,7 +194,15 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
   }
 
   _submit() async {
-    if (widget.formKey.currentState!.validate()) {
+    bool validate() {
+      if (widget.onValidate != null) {
+        return widget.onValidate!();
+      }
+
+      return widget.formKey.currentState!.validate();
+    }
+
+    if (validate()) {
       widget.formKey.currentState!.save();
 
       if (widget.onAskTerms != null && !_isSignIn) assert(_isAgree);
