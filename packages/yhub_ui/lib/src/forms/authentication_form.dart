@@ -12,7 +12,7 @@ class AuthenticationForm extends StatefulWidget {
   final Widget logo;
   final Widget? slogan;
 
-  final bool Function()? onValidate;
+  final bool Function(bool isSignIn)? onValidate;
   final Function()? onForgot;
   final Function()? onAskTerms;
   final Function(bool isSignIn)? onChanged;
@@ -34,13 +34,25 @@ class AuthenticationForm extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AuthenticationFormState createState() => _AuthenticationFormState();
+  AuthenticationFormState createState() => AuthenticationFormState();
 }
 
-class _AuthenticationFormState extends State<AuthenticationForm> {
+class AuthenticationFormState extends State<AuthenticationForm> {
   bool _isLoading = false;
   bool _isSignIn = true;
   bool _isAgree = false;
+
+  void showLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  void hideLoading() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +208,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
   _submit() async {
     bool validate() {
       if (widget.onValidate != null) {
-        return widget.onValidate!();
+        return widget.onValidate!(_isSignIn);
       }
 
       return widget.formKey.currentState!.validate();
@@ -209,15 +221,11 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
 
       FocusScope.of(context).unfocus();
 
-      setState(() {
-        _isLoading = true;
-      });
+      showLoading();
 
       await widget.onSubmit(_isSignIn);
 
-      setState(() {
-        _isLoading = false;
-      });
+      hideLoading();
     }
   }
 }

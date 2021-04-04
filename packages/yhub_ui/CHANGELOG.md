@@ -1,3 +1,7 @@
+# 0.0.9
+
+- Add `showLoading` and `hideLoading` to authentication form state.
+
 # 0.0.8
 
 - Fix enabled condidtion.
