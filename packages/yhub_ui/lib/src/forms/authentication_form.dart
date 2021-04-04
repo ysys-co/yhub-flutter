@@ -10,6 +10,8 @@ class AuthenticationForm extends StatefulWidget {
   final List<Widget> Function(bool isSignIn) fields;
   final List<Widget> Function(bool isSignIn)? children;
 
+  final bool enabled;
+
   final Widget logo;
   final Widget? slogan;
 
@@ -20,6 +22,7 @@ class AuthenticationForm extends StatefulWidget {
 
   const AuthenticationForm({
     Key? key,
+    this.enabled = true,
     required this.formKey,
     required this.logo,
     this.slogan,
@@ -101,7 +104,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
               minimumSize: Size(double.infinity, 48.0),
               shape: const StadiumBorder(),
             ),
-            onPressed: _isLoading ? null : _submit,
+            onPressed: (widget.enabled || _isLoading) ? null : _submit,
           ),
           const SizedBox(height: 8),
           ElevatedButton(
@@ -116,7 +119,7 @@ class _AuthenticationFormState extends State<AuthenticationForm> {
               onPrimary: Theme.of(context).accentColor,
               shape: const StadiumBorder(),
             ),
-            onPressed: _isLoading
+            onPressed: (widget.enabled || _isLoading)
                 ? null
                 : () async {
                     setState(() {

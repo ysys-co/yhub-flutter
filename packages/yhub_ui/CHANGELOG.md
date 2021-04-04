@@ -1,3 +1,7 @@
+# 0.0.7
+
+- Add enabled property to enable or disable authentication buttons.
+
 # 0.0.6
 
 - Fix onSubmit not showing progress bar.
