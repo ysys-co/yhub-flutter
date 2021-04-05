@@ -205,7 +205,7 @@ class AuthenticationFormState extends State<AuthenticationForm> {
     );
   }
 
-  _submit() async {
+  _submit() {
     bool validate() {
       if (widget.onValidate != null) {
         return widget.onValidate!(_isSignIn);
@@ -219,13 +219,7 @@ class AuthenticationFormState extends State<AuthenticationForm> {
 
       if (widget.onAskTerms != null && !_isSignIn) assert(_isAgree);
 
-      FocusScope.of(context).unfocus();
-
-      showLoading();
-
-      await widget.onSubmit(_isSignIn);
-
-      hideLoading();
+      widget.onSubmit(_isSignIn);
     }
   }
 }

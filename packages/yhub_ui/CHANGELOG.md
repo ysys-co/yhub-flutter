@@ -1,3 +1,7 @@
+# 0.1.3
+
+- Remove auto loading when submit.
+
 # 0.1.2
 
 - Add loading when resend.
