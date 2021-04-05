@@ -50,7 +50,7 @@ class AuthenticationFormState extends State<AuthenticationForm> {
 
   void hideLoading() {
     setState(() {
-      _isLoading = true;
+      _isLoading = false;
     });
   }
 
