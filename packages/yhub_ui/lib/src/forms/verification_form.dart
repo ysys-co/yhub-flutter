@@ -19,6 +19,7 @@ class VerificationForm extends StatefulWidget {
   final Function() onCancel;
   final Future Function()? onResend;
   final Function(int code) onSumbit;
+  final int Function()? attempts;
 
   const VerificationForm({
     Key? key,
@@ -28,6 +29,7 @@ class VerificationForm extends StatefulWidget {
     required this.username,
     required this.onCancel,
     this.onResend,
+    this.attempts,
     required this.onSumbit,
   })   : assert(length != null),
         super(key: key);
@@ -81,7 +83,10 @@ class _VerificationFormState extends State<VerificationForm> {
           ),
           const SizedBox(height: 8.0),
           if (widget.onResend != null)
-            _ResendCounter(onResend: widget.onResend!)
+            _ResendCounter(
+              onResend: widget.onResend!,
+              attempts: widget.attempts,
+            )
         ],
       ),
     );
@@ -90,8 +95,13 @@ class _VerificationFormState extends State<VerificationForm> {
 
 class _ResendCounter extends StatefulWidget {
   final Future Function() onResend;
+  final int Function()? attempts;
 
-  const _ResendCounter({Key? key, required this.onResend}) : super(key: key);
+  const _ResendCounter({
+    Key? key,
+    this.attempts,
+    required this.onResend,
+  }) : super(key: key);
 
   @override
   _ResendCounterState createState() => _ResendCounterState();
@@ -105,6 +115,7 @@ class _ResendCounterState extends State<_ResendCounter> {
   @override
   void initState() {
     super.initState();
+    if (widget.attempts != null) _attempts = widget.attempts!();
     _countdown();
   }
 

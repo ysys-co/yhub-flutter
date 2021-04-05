@@ -1,3 +1,11 @@
+# 1.0.1
+
+- Add attempts property to verify page.
+
+# 1.0.0
+
+- Fix some issues.
+
 # 0.0.9
 
 - Add `showLoading` and `hideLoading` to authentication form state.
