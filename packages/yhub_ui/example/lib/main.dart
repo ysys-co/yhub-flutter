@@ -110,7 +110,11 @@ class VerificationPage extends StatelessWidget {
               print('a:$a');
             },
             onCancel: () {},
-            onResend: () async {},
+            resend: VerificationResend(
+              onSumbit: () async {
+                await Future.delayed(Duration(seconds: 3));
+              },
+            ),
           ),
         ),
       ),

@@ -9,6 +9,18 @@ import 'package:yhub_ui/yhub_ui.dart';
 
 enum VerificationMethod { phone, email }
 
+class VerificationResend {
+  final Future Function() onSumbit;
+  final Duration duration;
+  final int Function()? attempts;
+
+  const VerificationResend({
+    required this.onSumbit,
+    this.attempts,
+    this.duration = const Duration(seconds: 60),
+  });
+}
+
 class VerificationForm extends StatefulWidget {
   final GlobalKey<FormState>? formKey;
 
@@ -17,9 +29,8 @@ class VerificationForm extends StatefulWidget {
   final VerificationMethod? method;
 
   final Function() onCancel;
-  final Future Function()? onResend;
   final Function(int code) onSumbit;
-  final int Function()? attempts;
+  final VerificationResend? resend;
 
   const VerificationForm({
     Key? key,
@@ -28,8 +39,7 @@ class VerificationForm extends StatefulWidget {
     this.length = 6,
     required this.username,
     required this.onCancel,
-    this.onResend,
-    this.attempts,
+    this.resend,
     required this.onSumbit,
   })   : assert(length != null),
         super(key: key);
@@ -82,11 +92,7 @@ class _VerificationFormState extends State<VerificationForm> {
             onCompleted: (value) => widget.onSumbit(int.parse(value)),
           ),
           const SizedBox(height: 8.0),
-          if (widget.onResend != null)
-            _ResendCounter(
-              onResend: widget.onResend!,
-              attempts: widget.attempts,
-            )
+          if (widget.resend != null) _ResendCounter(widget.resend!)
         ],
       ),
     );
@@ -94,28 +100,25 @@ class _VerificationFormState extends State<VerificationForm> {
 }
 
 class _ResendCounter extends StatefulWidget {
-  final Future Function() onResend;
-  final int Function()? attempts;
+  final VerificationResend resend;
 
-  const _ResendCounter({
-    Key? key,
-    this.attempts,
-    required this.onResend,
-  }) : super(key: key);
+  const _ResendCounter(this.resend);
 
   @override
   _ResendCounterState createState() => _ResendCounterState();
 }
 
 class _ResendCounterState extends State<_ResendCounter> {
-  int _timeout = 60;
+  int _timeout = 0;
   int _attempts = 0;
   Timer? _timer;
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    if (widget.attempts != null) _attempts = widget.attempts!();
+    if (widget.resend.attempts != null) _attempts = widget.resend.attempts!();
     _countdown();
   }
 
@@ -126,7 +129,7 @@ class _ResendCounterState extends State<_ResendCounter> {
   }
 
   _countdown() {
-    _timeout = 60 * (++_attempts);
+    _timeout = widget.resend.duration.inSeconds * (++_attempts);
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         --_timeout;
@@ -155,17 +158,39 @@ class _ResendCounterState extends State<_ResendCounter> {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        YHubUILocalizations.of(context)!.resend,
-      ),
-      trailing: _timeout != 0 ? Text(remaining) : null,
-      onTap: () {
-        widget.onResend().whenComplete(() {
-          _countdown();
-        });
-      },
-      enabled: _timeout == 0,
+    return Row(
+      children: [
+        TextButton.icon(
+          label: Text(
+            YHubUILocalizations.of(context)!.resend,
+          ),
+          icon: _isLoading
+              ? SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                  ),
+                )
+              : SizedBox(),
+          onPressed: (_isLoading || _timeout == 0)
+              ? () {
+                  setState(() {
+                    _isLoading = true;
+                  });
+
+                  widget.resend.onSumbit().whenComplete(() {
+                    _countdown();
+
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  });
+                }
+              : null,
+        ),
+        if (_timeout > 0) Text(' • $remaining'),
+      ],
     );
   }
 }

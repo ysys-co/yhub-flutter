@@ -1,8 +1,13 @@
-# 1.0.1
+# 0.1.2
+
+- Add loading when resend.
+- Add resend property to verification form.
+
+# 0.1.1
 
 - Add attempts property to verify page.
 
-# 1.0.0
+# 0.1.0
 
 - Fix some issues.
 
