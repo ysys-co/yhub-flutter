@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 import 'package:yhub_ui/l10n/yhub_ui_localizations.dart';
 import 'package:yhub_ui/yhub_ui.dart';
 
@@ -82,16 +81,14 @@ class _VerificationFormState extends State<VerificationForm> {
               ),
             ),
           ),
-          OTPTextField(
-            length: widget.length!,
-            width: MediaQuery.of(context).size.width,
-            fieldWidth: 28,
-            style: TextStyle(fontSize: 20),
-            textFieldAlignment: MainAxisAlignment.spaceAround,
-            fieldStyle: FieldStyle.underline,
-            onCompleted: (value) => widget.onSumbit(int.parse(value)),
+          TextFieldPinAutoFill(
+            autofocus: true,
+            codeLength: widget.length!,
+            onCodeChanged: (value) {
+              if (value.length == widget.length!)
+                widget.onSumbit(int.parse(value));
+            },
           ),
-          const SizedBox(height: 8.0),
           if (widget.resend != null) _ResendCounter(widget.resend!)
         ],
       ),
