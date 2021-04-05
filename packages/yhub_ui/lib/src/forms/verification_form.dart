@@ -10,7 +10,7 @@ import 'package:yhub_ui/yhub_ui.dart';
 enum VerificationMethod { phone, email }
 
 class VerificationResend {
-  final Future Function() onSumbit;
+  final Future<bool> Function() onSumbit;
   final Duration duration;
   final int Function()? attempts;
 
@@ -174,14 +174,14 @@ class _ResendCounterState extends State<_ResendCounter> {
                 )
               : SizedBox(),
           onPressed: (_isLoading || _timeout == 0)
-              ? () {
+              ? () async {
                   setState(() {
                     _isLoading = true;
                   });
 
-                  widget.resend.onSumbit().whenComplete(() {
-                    _countdown();
-
+                  widget.resend.onSumbit().then((value) {
+                    if (value) _countdown();
+                  }).whenComplete(() {
                     setState(() {
                       _isLoading = false;
                     });
