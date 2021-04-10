@@ -42,6 +42,8 @@ class AuthenticationFormState extends State<AuthenticationForm> {
   bool _isSignIn = true;
   bool _isAgree = false;
 
+  bool get isLoading => _isLoading;
+
   void showLoading() {
     setState(() {
       _isLoading = true;

@@ -1,3 +1,11 @@
+# 0.1.5
+
+- Add isLoading propery in authentication form state.
+
+# 0.1.4
+
+- Improvments.
+
 # 0.1.3
 
 - Remove auto loading when submit.
