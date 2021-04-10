@@ -1,3 +1,7 @@
+# 0.1.6
+
+- Add toggle property.
+
 # 0.1.5
 
 - Add isLoading propery in authentication form state.

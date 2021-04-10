@@ -43,6 +43,7 @@ class AuthenticationFormState extends State<AuthenticationForm> {
   bool _isAgree = false;
 
   bool get isLoading => _isLoading;
+  bool get isSignIn => _isSignIn;
 
   void showLoading() {
     setState(() {
@@ -132,21 +133,27 @@ class AuthenticationFormState extends State<AuthenticationForm> {
               onPrimary: Theme.of(context).accentColor,
               shape: const StadiumBorder(),
             ),
-            onPressed: (!widget.enabled || _isLoading)
-                ? null
-                : () async {
-                    setState(() {
-                      widget.formKey.currentState!.reset();
-                      _isSignIn = !_isSignIn;
-                    });
-
-                    if (widget.onChanged != null) widget.onChanged!(_isSignIn);
-                  },
+            onPressed: (!widget.enabled || _isLoading) ? null : _onChange,
           ),
           if (widget.children != null) ...widget.children!(_isSignIn),
         ],
       ),
     );
+  }
+
+  void toggle() {
+    setState(() {
+      _isSignIn = !isSignIn;
+    });
+  }
+
+  _onChange() {
+    widget.formKey.currentState!.reset();
+
+    if (widget.onChanged != null)
+      widget.onChanged!(_isSignIn);
+    else
+      toggle();
   }
 
   Widget _buildTermsOfService() {
