@@ -82,7 +82,7 @@ class _VerificationFormState extends State<VerificationForm> {
             ),
           ),
           TextFieldPinAutoFill(
-            autofocus: true,
+            autoFocus: true,
             codeLength: widget.length!,
             onCodeChanged: (value) {
               if (value.length == widget.length!)

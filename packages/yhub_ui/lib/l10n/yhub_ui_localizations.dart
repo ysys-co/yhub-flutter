@@ -144,6 +144,18 @@ abstract class YHubUILocalizations {
   /// **'Terms of Service'**
   String get termsOfService;
 
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @and.
+  ///
+  /// In en, this message translates to:
+  /// **'and '**
+  String get and;
+
   /// No description provided for @resend.
   ///
   /// In en, this message translates to:

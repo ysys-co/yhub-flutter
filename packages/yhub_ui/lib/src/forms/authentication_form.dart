@@ -12,9 +12,10 @@ class AuthenticationForm extends StatefulWidget {
   final Widget logo;
   final Widget? slogan;
 
-  final bool Function(bool isSignIn)? onValidate;
   final Function()? onForgot;
-  final Function()? onAskTerms;
+  final Function()? onAskTermsOfService;
+  final Function()? onAskPrivacyPolicy;
+  final Function(bool isSignIn)? onValidate;
   final Function(bool isSignIn)? onChanged;
   final Function(bool isSignIn) onSubmit;
 
@@ -29,7 +30,8 @@ class AuthenticationForm extends StatefulWidget {
     this.onChanged,
     required this.onSubmit,
     this.onForgot,
-    this.onAskTerms,
+    this.onAskTermsOfService,
+    this.onAskPrivacyPolicy,
     this.children,
   }) : super(key: key);
 
@@ -90,7 +92,9 @@ class AuthenticationFormState extends State<AuthenticationForm> {
             else
               const SizedBox(height: 16.0),
           ] else ...[
-            if (widget.onAskTerms != null) _buildTermsOfService(),
+            if (widget.onAskTermsOfService != null ||
+                widget.onAskPrivacyPolicy != null)
+              _buildAgreeCheckbox(),
             const SizedBox(height: 16.0),
           ],
           ElevatedButton.icon(
@@ -143,20 +147,19 @@ class AuthenticationFormState extends State<AuthenticationForm> {
 
   void toggle() {
     setState(() {
-      _isSignIn = !isSignIn;
+      _isSignIn = !_isSignIn;
     });
   }
 
   _onChange() {
     widget.formKey.currentState!.reset();
 
-    if (widget.onChanged != null)
-      widget.onChanged!(_isSignIn);
-    else
-      toggle();
+    toggle();
+
+    if (widget.onChanged != null) widget.onChanged!(_isSignIn);
   }
 
-  Widget _buildTermsOfService() {
+  Widget _buildAgreeCheckbox() {
     return FormField<bool>(
       initialValue: false,
       validator: (value) {
@@ -180,17 +183,36 @@ class AuthenticationFormState extends State<AuthenticationForm> {
                       text: YHubUILocalizations.of(context)!.accept,
                       style: Theme.of(context).textTheme.bodyText2,
                       children: <TextSpan>[
-                        TextSpan(
-                          text:
-                              ' ${YHubUILocalizations.of(context)!.termsOfService}',
-                          style:
-                              Theme.of(context).textTheme.bodyText1!.copyWith(
-                                    color: Theme.of(context).primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = widget.onAskTerms,
-                        ),
+                        if (widget.onAskTermsOfService != null)
+                          TextSpan(
+                            text:
+                                ' ${YHubUILocalizations.of(context)!.termsOfService}',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = widget.onAskTermsOfService,
+                          ),
+                        if (widget.onAskTermsOfService != null &&
+                            widget.onAskPrivacyPolicy != null)
+                          TextSpan(
+                            text: ' ${YHubUILocalizations.of(context)!.and}',
+                          ),
+                        if (widget.onAskPrivacyPolicy != null) ...[
+                          TextSpan(
+                            text:
+                                '${widget.onAskTermsOfService == null ? ' ' : ''}${YHubUILocalizations.of(context)!.privacyPolicy}',
+                            style:
+                                Theme.of(context).textTheme.bodyText1!.copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = widget.onAskPrivacyPolicy,
+                          ),
+                        ]
                       ],
                     ),
                   ),
@@ -226,7 +248,9 @@ class AuthenticationFormState extends State<AuthenticationForm> {
     if (validate()) {
       widget.formKey.currentState!.save();
 
-      if (widget.onAskTerms != null && !_isSignIn) assert(_isAgree);
+      if ((widget.onAskPrivacyPolicy != null ||
+              widget.onAskTermsOfService != null) &&
+          !_isSignIn) assert(_isAgree);
 
       widget.onSubmit(_isSignIn);
     }

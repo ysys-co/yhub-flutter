@@ -56,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class AuthenticationPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final _authKey = GlobalKey<AuthenticationFormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -64,11 +65,12 @@ class AuthenticationPage extends StatelessWidget {
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: AuthenticationForm(
+            key: _authKey,
             formKey: _formKey,
             logo: Text('My Logo'),
             slogan: Text('Hello World'),
             fields: (isSignIn) => [
-              if (!isSignIn)
+              if (!_authKey.currentState!.isSignIn)
                 TextFormField(
                   key: Key('name'),
                   decoration: InputDecoration(labelText: 'Name'),
@@ -82,7 +84,8 @@ class AuthenticationPage extends StatelessWidget {
                 decoration: InputDecoration(labelText: 'Password'),
               ),
             ],
-            onAskTerms: () {},
+            onAskPrivacyPolicy: () {},
+            onAskTermsOfService: () {},
             onSubmit: (isSignIn) async {
               await Future.delayed(Duration(seconds: 3));
               print('Success');

@@ -34,6 +34,12 @@ class YHubUILocalizationsAr extends YHubUILocalizations {
   String get termsOfService => 'شروط الخدمة';
 
   @override
+  String get privacyPolicy => 'سياسة الخصوصية';
+
+  @override
+  String get and => 'و';
+
+  @override
   String get resend => 'إعادة ارسال';
 
   @override

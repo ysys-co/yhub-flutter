@@ -34,6 +34,12 @@ class YHubUILocalizationsEn extends YHubUILocalizations {
   String get termsOfService => 'Terms of Service';
 
   @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get and => 'and ';
+
+  @override
   String get resend => 'Resend';
 
   @override
