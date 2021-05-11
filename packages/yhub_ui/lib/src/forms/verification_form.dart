@@ -21,8 +21,6 @@ class VerificationResend {
 }
 
 class VerificationForm extends StatefulWidget {
-  final GlobalKey<FormState>? formKey;
-
   final int? length;
   final String username;
   final VerificationMethod? method;
@@ -33,7 +31,6 @@ class VerificationForm extends StatefulWidget {
 
   const VerificationForm({
     Key? key,
-    this.formKey,
     this.method = VerificationMethod.phone,
     this.length = 6,
     required this.username,
@@ -50,48 +47,45 @@ class VerificationForm extends StatefulWidget {
 class _VerificationFormState extends State<VerificationForm> {
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: widget.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            title: Text(
-              widget.method == VerificationMethod.phone
-                  ? YHubUILocalizations.of(context)!.verifyYourPhone
-                  : YHubUILocalizations.of(context)!.verifyYourEmail,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            subtitle: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: YHubUILocalizations.of(context)!
-                        .enterOTP(widget.username),
-                  ),
-                  TextSpan(
-                    text: ' ${YHubUILocalizations.of(context)!.change}',
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: Theme.of(context).primaryColor,
-                        ),
-                    recognizer: TapGestureRecognizer()..onTap = widget.onCancel,
-                  ),
-                ],
-              ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: Text(
+            widget.method == VerificationMethod.phone
+                ? YHubUILocalizations.of(context)!.verifyYourPhone
+                : YHubUILocalizations.of(context)!.verifyYourEmail,
+            style: Theme.of(context).textTheme.headline6,
+          ),
+          subtitle: Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: YHubUILocalizations.of(context)!
+                      .enterOTP(widget.username),
+                ),
+                TextSpan(
+                  text: ' ${YHubUILocalizations.of(context)!.change}',
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: Theme.of(context).primaryColor,
+                      ),
+                  recognizer: TapGestureRecognizer()..onTap = widget.onCancel,
+                ),
+              ],
             ),
           ),
-          TextFieldPinAutoFill(
-            autoFocus: true,
-            codeLength: widget.length!,
-            onCodeChanged: (value) {
-              if (value.length == widget.length!)
-                widget.onSumbit(int.parse(value));
-            },
-          ),
-          if (widget.resend != null) _ResendCounter(widget.resend!)
-        ],
-      ),
+        ),
+        TextFieldPinAutoFill(
+          autoFocus: true,
+          codeLength: widget.length!,
+          onCodeChanged: (value) {
+            if (value.length == widget.length!)
+              widget.onSumbit(int.parse(value));
+          },
+        ),
+        if (widget.resend != null) _ResendCounter(widget.resend!)
+      ],
     );
   }
 }

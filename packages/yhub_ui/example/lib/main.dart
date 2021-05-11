@@ -64,32 +64,37 @@ class AuthenticationPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: AuthenticationForm(
-            key: _authKey,
-            formKey: _formKey,
-            logo: Text('My Logo'),
-            slogan: Text('Hello World'),
-            fields: (isSignIn) => [
-              if (!_authKey.currentState!.isSignIn)
+          child: Form(
+            key: _formKey,
+            child: AuthenticationForm(
+              key: _authKey,
+              logo: Text('My Logo'),
+              slogan: Text('Hello World'),
+              fields: (isSignIn) => [
+                if (!_authKey.currentState!.isSignIn)
+                  TextFormField(
+                    key: Key('name'),
+                    decoration: InputDecoration(labelText: 'Name'),
+                  ),
                 TextFormField(
-                  key: Key('name'),
-                  decoration: InputDecoration(labelText: 'Name'),
+                  key: Key('email'),
+                  decoration: InputDecoration(labelText: 'Email'),
                 ),
-              TextFormField(
-                key: Key('email'),
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextFormField(
-                key: Key('password'),
-                decoration: InputDecoration(labelText: 'Password'),
-              ),
-            ],
-            onAskPrivacyPolicy: () {},
-            onAskTermsOfService: () {},
-            onSubmit: (isSignIn) async {
-              await Future.delayed(Duration(seconds: 3));
-              print('Success');
-            },
+                TextFormField(
+                  key: Key('password'),
+                  decoration: InputDecoration(labelText: 'Password'),
+                ),
+              ],
+              onAskPrivacyPolicy: () {},
+              onAskTermsOfService: () {},
+              onChanged: (_) {
+                _formKey.currentState!.reset();
+              },
+              onSubmit: (isSignIn) async {
+                await Future.delayed(Duration(seconds: 3));
+                print('Success');
+              },
+            ),
           ),
         ),
       ),
@@ -106,19 +111,21 @@ class VerificationPage extends StatelessWidget {
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: VerificationForm(
-            formKey: _formKey,
-            username: '9677737472',
-            onSumbit: (int a) {
-              print('a:$a');
-            },
-            onCancel: () {},
-            resend: VerificationResend(
-              onSumbit: () async {
-                await Future.delayed(Duration(seconds: 3));
-
-                return false;
+          child: Form(
+            key: _formKey,
+            child: VerificationForm(
+              username: '9677737472',
+              onSumbit: (int a) {
+                print('a:$a');
               },
+              onCancel: () {},
+              resend: VerificationResend(
+                onSumbit: () async {
+                  await Future.delayed(Duration(seconds: 3));
+
+                  return false;
+                },
+              ),
             ),
           ),
         ),
