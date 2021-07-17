@@ -1,0 +1,26 @@
+{
+  "signIn": "S'identifier",
+  "signUp": "S'inscrire",
+  "signOut": "Déconnexion",
+  "forgotPassword": "Mot de passe oublié?",
+  "newHere": "Nouveau ici? S'inscrire",
+  "alreadyRegistered": "Déjà enregistré",
+  "accept": "J'accepte",
+  "termsOfService": "Conditions de Service",
+  "privacyPolicy": "Politique de confidentialité",
+  "and": "et ",
+  "resend": "Renvoyer",
+  "code": "Code",
+  "change": " changement?",
+  "errorAcceptTermsOfService": "Désolé, vous ne pouvez pas continuer sans accepter",
+  "verifyYourPhone": "Vérifiez votre téléphone",
+  "verifyYourEmail": "Vérifiez votre e-mail",
+  "enterOTP": "Saisissez l'OTP envoyé à {username} ",
+  "@enterOTP": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  }
+}

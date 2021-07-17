@@ -1,9 +1,7 @@
 
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
-import 'yhub_ui_localizations.dart';
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+
+import 'yhub_ui_localizations.dart';
 
 /// The translations for Arabic (`ar`).
 class YHubUILocalizationsAr extends YHubUILocalizations {
@@ -59,6 +57,6 @@ class YHubUILocalizationsAr extends YHubUILocalizations {
 
   @override
   String enterOTP(String username) {
-    return 'ادخل الرمز المرسل الى ${username}';
+    return 'ادخل الرمز المرسل الى $username';
   }
 }
