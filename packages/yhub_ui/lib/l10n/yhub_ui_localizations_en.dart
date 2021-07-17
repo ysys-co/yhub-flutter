@@ -1,9 +1,7 @@
 
-// ignore: unused_import
-import 'package:intl/intl.dart' as intl;
-import 'yhub_ui_localizations.dart';
 
-// ignore_for_file: unnecessary_brace_in_string_interps
+
+import 'yhub_ui_localizations.dart';
 
 /// The translations for English (`en`).
 class YHubUILocalizationsEn extends YHubUILocalizations {
@@ -59,6 +57,6 @@ class YHubUILocalizationsEn extends YHubUILocalizations {
 
   @override
   String enterOTP(String username) {
-    return 'Enter the OTP sent to ${username}';
+    return 'Enter the OTP sent to $username';
   }
 }
