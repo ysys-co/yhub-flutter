@@ -15,12 +15,5 @@
   "errorAcceptTermsOfService": "Désolé, vous ne pouvez pas continuer sans accepter",
   "verifyYourPhone": "Vérifiez votre téléphone",
   "verifyYourEmail": "Vérifiez votre e-mail",
-  "enterOTP": "Saisissez l'OTP envoyé à {username} ",
-  "@enterOTP": {
-    "placeholders": {
-      "username": {
-        "type": "String"
-      }
-    }
-  }
+  "enterOTP": "Saisissez l'OTP envoyé à {username} "
 }
