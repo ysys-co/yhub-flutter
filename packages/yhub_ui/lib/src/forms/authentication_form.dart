@@ -130,7 +130,7 @@ class AuthenticationFormState extends State<AuthenticationForm> {
           style: ElevatedButton.styleFrom(
             minimumSize: const Size(double.infinity, 48.0),
             primary: Theme.of(context).backgroundColor,
-            onPrimary: Theme.of(context).accentColor,
+            onPrimary: Theme.of(context).colorScheme.secondary,
             shape: const StadiumBorder(),
           ),
           onPressed: (!widget.enabled || _isLoading) ? null : _onChange,
